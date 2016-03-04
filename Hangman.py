@@ -1,21 +1,25 @@
 import random
 import sys
 
-# Clear screen
-
-# New game prompt
 # Write docs
 # Write test file
 # Error: multiple letter guesses count as a missed guess. Good idea for a test.
 
+
 def intro():
+    """
+    Welcomes player to game and asks them to select a difficult level.
+    :return: Difficulty option.
+    """
     print("Welcome to mystery-word, please select difficulty level.")
     print("Type 'exit' at any point to exit the game.")
-    print("",
+    print(
+          "",
           "[E]asy: 4-6 characters",
           "[N]ormal: 6-10 characters",
           "[H]ard: 10+ characters",
-          sep="\n")
+          sep="\n"
+    )
     option = input("Please enter E, N, or H: ").upper()
     while option not in "ENH":
         if option == "EXIT":
@@ -25,6 +29,11 @@ def intro():
 
 
 def select_word(option):
+    """
+    Selects a random secret word of the appropriate length.
+    :param option: Difficulty level determines word length.
+    :return: A random word.
+    """
     with open("/usr/share/dict/words") as words:
         word_list = words.read().split("\n")
 
@@ -34,6 +43,13 @@ def select_word(option):
 
 
 def display(guesses, word_image, missed_guesses):
+    """
+
+    :param guesses: Number of remaining missed guesses.
+    :param word_image: The missing and guesses letters.
+    :param missed_guesses: Guessed letters that were not in the word.
+    :return:
+    """
     # word_image is a list of dashes and guessed letters
     plural_dict = {True: "guesses", False: "guess"}
 
@@ -76,9 +92,6 @@ def next_game():
     next_game = input("Enter 'Y' to play again, any other key to exit: ")
     return next_game.upper() == "Y"
 
-# Display: Guesses remaining, word image
-
-# User guess function: valid input, check word and guess history, update guesses
 
 def game():
     mode = intro()
