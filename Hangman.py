@@ -1,14 +1,14 @@
 import random
 import sys
 
-# Write docs
+
 # Write test file
 # Error: multiple letter guesses count as a missed guess. Good idea for a test.
 
 
 def intro():
     """
-    Welcomes player to game and asks them to select a difficult level.
+    Welcomes player to game and asks them to select a difficulty level.
     :return: Difficulty option.
     """
     print("Welcome to mystery-word, please select difficulty level.")
@@ -44,13 +44,12 @@ def select_word(option):
 
 def display(guesses, word_image, missed_guesses):
     """
-
+    Display information at the start of each round.
     :param guesses: Number of remaining missed guesses.
-    :param word_image: The missing and guesses letters.
+    :param word_image: The missing and guessed letters.
     :param missed_guesses: Guessed letters that were not in the word.
     :return:
     """
-    # word_image is a list of dashes and guessed letters
     plural_dict = {True: "guesses", False: "guess"}
 
     print("", " ".join(word_image), sep="\n")
@@ -59,7 +58,10 @@ def display(guesses, word_image, missed_guesses):
 
 
 def player_input():
-    # return a valid letter guess from player
+    """
+    An invalid entry will repeat the prompt.
+    :return: A single letter from user.
+    """
     guess = ''
     while not guess.isalpha() or len(guess) != 1:
         guess = input("Please guess a letter: ").upper()
@@ -69,9 +71,10 @@ def player_input():
 
 
 def player_guess(board, missed_guesses):
-    # Gets and returns a valid player guess.
-
-    # Might be better to combine into one list of previous guesses
+    """
+    Check to see if guess has been guessed previously.
+    :return: A valid player guess.
+    """
     guess = player_input()
     if guess in missed_guesses or guess in board:
         print("You already guessed that one!", "", sep="\n")
@@ -81,6 +84,9 @@ def player_guess(board, missed_guesses):
 
 
 def update_board(guess, secret_word, board):
+    """
+    :return: The board updated with a correct guess.
+    """
     for i in range(len(secret_word)):
         if guess == secret_word[i]:
             board[i] = guess
@@ -88,12 +94,20 @@ def update_board(guess, secret_word, board):
 
 
 def next_game():
+    """
+    Prompts user to ask if they want to play another game.
+    :return: Player input.
+    """
     print("")
     next_game = input("Enter 'Y' to play again, any other key to exit: ")
     return next_game.upper() == "Y"
 
 
 def game():
+    """
+    The main function. Call to run the game.
+    :return: True if the user wishes to play again.
+    """
     mode = intro()
 
     secret_word = select_word(mode)
