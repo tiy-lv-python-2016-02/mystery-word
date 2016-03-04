@@ -22,10 +22,11 @@ def select_word(option):
     return random.choice(possible_words).upper()
 
 
-def display(guesses, word_image):
+def display(guesses, word_image, missed_guesses):
     # word_image is a list of dashes and guessed letters
     print("", " ".join(word_image), sep="\n")
     print("You have {} guesses remaining".format(guesses))
+    print("You have guessed: {}".format(missed_guesses))
 
 
 def player_input():
@@ -52,42 +53,38 @@ def player_guess(board, missed_guesses):
 
 # User guess function: valid input, check word and guess history, update guesses
 
+def game():
+    mode = intro()
 
-mode = intro()
+    secret_word = select_word(mode)
 
-secret_word = select_word(mode)
+    print("The word is {} characters long".format(len(secret_word)))
 
-print("The word is {} characters long".format(len(secret_word)))
+    remaining_tries = 8
+    board = ["_"] * len(secret_word)
+    missed_guesses = []
 
+    while remaining_tries > 0:
 
-remaining_tries = 8
-board = ["_"] * len(secret_word)
-missed_guesses = []
+        display(remaining_tries, board, missed_guesses)
+        guess = player_guess(board, missed_guesses)
 
-while remaining_tries > 0:
+        if guess in secret_word:
+            for i in range(len(secret_word)):  # Break into function. Maybe use index.
+                if guess == secret_word[i]:
+                    board[i] = guess
+        else:
+            remaining_tries -= 1
+            missed_guesses.append(guess)
 
-    display(remaining_tries, board)
-    guess = player_guess(board, missed_guesses)
+        if "_" not in board:
+            return print(secret_word, "You win!", sep="\n")
 
-
-    if guess in secret_word:
-        for i in range(len(secret_word)):  # Break into function. Maybe use index.
-            if guess == secret_word[i]:
-                board[i] = guess
-    else:
-        remaining_tries -= 1
-        missed_guesses.append(guess)
-
-    if "_" not in board:
-        print(secret_word, "You win!", sep="\n")
-
-
-
-print("You are out of guesses. The word was {}.".format(secret_word))  # Actually a return in main function
+    return print("You are out of guesses. The word was {}.".format(secret_word))
 
 
 
-
+game()
 
 
 
