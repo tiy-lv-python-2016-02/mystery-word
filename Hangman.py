@@ -1,5 +1,7 @@
 import random
+# sys.exit()
 
+# Way to see already guessed letters
 
 
 def intro():
@@ -29,7 +31,7 @@ def display(guesses, word_image):
 def player_input():
     # return a valid letter guess from player
     guess = ''
-    while not guess.isalpha() and len(guess) == 1:
+    while not guess.isalpha() and len(guess) != 1:
         guess = input("Please guess a letter: ").upper()
     return guess
 
@@ -40,7 +42,7 @@ def player_guess(board, missed_guesses):
     # Might be better to combine into one list of previous guesses
     guess = player_input()
     if guess in missed_guesses or guess in board:
-        print("You already guessed that one!")
+        print("You already guessed that one!", "", sep="\n")
         return player_guess(board, missed_guesses)
     else:
         return guess
@@ -67,16 +69,19 @@ while remaining_tries > 0:
     display(remaining_tries, board)
     guess = player_guess(board, missed_guesses)
 
-    if guess not in secret_word:
-        remaining_tries -= 1
-        missed_guesses.append(guess)
-    else:
-        for i in range(len(secret_word)):
+
+    if guess in secret_word:
+        for i in range(len(secret_word)):  # Break into function. Maybe use index.
             if guess == secret_word[i]:
                 board[i] = guess
+    else:
+        remaining_tries -= 1
+        missed_guesses.append(guess)
 
     if "_" not in board:
         print(secret_word, "You win!", sep="\n")
+
+
 
 print("You are out of guesses. The word was {}.".format(secret_word))  # Actually a return in main function
 
