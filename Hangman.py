@@ -1,11 +1,16 @@
 import random
-# sys.exit()
+import sys
 
-# Way to see already guessed letters
+# Clear screen
+# Clean up loop in game()
 
+# Write docs
+# Write test file
+# Error: multiple letter guesses count as a missed guess. Good idea for a test.
 
 def intro():
     print("Welcome to mystery-word, please select difficulty level.")
+    print("Type 'exit' to exit the game")
     print("[E]asy: 4-6 characters, [N]ormal: 6-10, [H]ard: 10+", sep="\n")
     option = input("--> ").upper()
     while option not in "ENH":
@@ -24,16 +29,20 @@ def select_word(option):
 
 def display(guesses, word_image, missed_guesses):
     # word_image is a list of dashes and guessed letters
+    plural_dict = {True: "guesses", False: "guess"}
+
     print("", " ".join(word_image), sep="\n")
-    print("You have {} guesses remaining".format(guesses))
+    print("You have {} {} remaining".format(guesses, plural_dict[guesses > 1]))
     print("You have guessed: {}".format(missed_guesses))
 
 
 def player_input():
     # return a valid letter guess from player
     guess = ''
-    while not guess.isalpha() and len(guess) != 1:
+    while not guess.isalpha() or len(guess) != 1:
         guess = input("Please guess a letter: ").upper()
+        if guess == "EXIT":
+            sys.exit()
     return guess
 
 
@@ -47,6 +56,13 @@ def player_guess(board, missed_guesses):
         return player_guess(board, missed_guesses)
     else:
         return guess
+
+
+def update_board(guess, secret_word, board):
+    for i in range(len(secret_word)):
+        if guess == secret_word[i]:
+            board[i] = guess
+    return board
 
 
 # Display: Guesses remaining, word image
@@ -70,9 +86,7 @@ def game():
         guess = player_guess(board, missed_guesses)
 
         if guess in secret_word:
-            for i in range(len(secret_word)):  # Break into function. Maybe use index.
-                if guess == secret_word[i]:
-                    board[i] = guess
+            board = update_board(guess, secret_word, board)
         else:
             remaining_tries -= 1
             missed_guesses.append(guess)
@@ -83,8 +97,9 @@ def game():
     return print("You are out of guesses. The word was {}.".format(secret_word))
 
 
+if __name__ == '__main__':
 
-game()
+    game()
 
 
 
