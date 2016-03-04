@@ -2,19 +2,25 @@ import random
 import sys
 
 # Clear screen
-# Clean up loop in game()
 
+# New game prompt
 # Write docs
 # Write test file
 # Error: multiple letter guesses count as a missed guess. Good idea for a test.
 
 def intro():
     print("Welcome to mystery-word, please select difficulty level.")
-    print("Type 'exit' to exit the game")
-    print("[E]asy: 4-6 characters, [N]ormal: 6-10, [H]ard: 10+", sep="\n")
-    option = input("--> ").upper()
+    print("Type 'exit' at any point to exit the game.")
+    print("",
+          "[E]asy: 4-6 characters",
+          "[N]ormal: 6-10 characters",
+          "[H]ard: 10+ characters",
+          sep="\n")
+    option = input("Please enter E, N, or H: ").upper()
     while option not in "ENH":
-        option = input("--> ").upper()
+        if option == "EXIT":
+            sys.exit()
+        option = input("Please enter E, N, or H: ").upper()
     return option
 
 
@@ -65,6 +71,11 @@ def update_board(guess, secret_word, board):
     return board
 
 
+def next_game():
+    print("")
+    next_game = input("Enter 'Y' to play again, any other key to exit: ")
+    return next_game.upper() == "Y"
+
 # Display: Guesses remaining, word image
 
 # User guess function: valid input, check word and guess history, update guesses
@@ -92,14 +103,19 @@ def game():
             missed_guesses.append(guess)
 
         if "_" not in board:
-            return print(secret_word, "You win!", sep="\n")
+            print("", secret_word, "You win!", sep="\n")
+            return next_game()
 
-    return print("You are out of guesses. The word was {}.".format(secret_word))
+    print("You are out of guesses. The word was {}.".format(secret_word))
+    return next_game()
 
 
 if __name__ == '__main__':
 
-    game()
+    new_game = True
+
+    while new_game:
+        new_game = game()
 
 
 
