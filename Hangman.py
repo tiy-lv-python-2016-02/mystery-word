@@ -1,9 +1,5 @@
 import random
-import sys
 
-
-# Write test file
-# Error: multiple letter guesses count as a missed guess. Good idea for a test.
 
 
 def intro():
@@ -18,12 +14,11 @@ def intro():
           "[E]asy: 4-6 characters",
           "[N]ormal: 6-10 characters",
           "[H]ard: 10+ characters",
+          "",
           sep="\n"
     )
-    option = input("Please enter E, N, or H: ").upper()
+    option = " "
     while option not in "ENH":
-        if option == "EXIT":
-            sys.exit()
         option = input("Please enter E, N, or H: ").upper()
     return option
 
@@ -65,8 +60,6 @@ def player_input():
     guess = ''
     while not guess.isalpha() or len(guess) != 1:
         guess = input("Please guess a letter: ").upper()
-        if guess == "EXIT":
-            sys.exit()
     return guess
 
 
@@ -85,12 +78,10 @@ def player_guess(board, missed_guesses):
 
 def update_board(guess, secret_word, board):
     """
+    Fills in the board where the newly guessed letter appears.
     :return: The board updated with a correct guess.
     """
-    for i in range(len(secret_word)):
-        if guess == secret_word[i]:
-            board[i] = guess
-    return board
+    return [x[1] if x[1] == guess else x[0] for x in zip(board, secret_word)]
 
 
 def next_game():
@@ -124,6 +115,7 @@ def game():
         guess = player_guess(board, missed_guesses)
 
         if guess in secret_word:
+            print("", "Good guess!", sep="\n")
             board = update_board(guess, secret_word, board)
         else:
             remaining_tries -= 1
@@ -143,14 +135,3 @@ if __name__ == '__main__':
 
     while new_game:
         new_game = game()
-
-
-
-
-
-
-
-
-
-
-
