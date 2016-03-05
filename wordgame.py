@@ -1,4 +1,5 @@
 import random
+import sys
 
 
 def get_word_list(mode):
@@ -23,15 +24,18 @@ def get_word_list(mode):
     return words_list
 
 
-def letter_guess(letter_guesses):
+def letter_guess(already_guessed):
 
-    guessed_letter = input("Guess a letter:")
+    guessed_letter = input("Guess a letter: ")
 
-    if guessed_letter.isalpha() and guessed_letter not in letter_guesses:
-        letter_guesses.append(guessed_letter)
+    if guessed_letter.isalpha() and guessed_letter not in already_guessed:
+        already_guessed.append(guessed_letter[0])
         return guessed_letter
     else:
-        letter_guess(letter_guesses)
+        print("Input invalid.")
+        letter_guess(already_guessed)
+
+    return already_guessed
 
 
 def blank_replacer(length, the_word, letter, board_arg):
@@ -42,6 +46,17 @@ def blank_replacer(length, the_word, letter, board_arg):
                         board_arg[i].replace("_", letter) + board_arg[i+1:]
 
     return board_arg
+
+
+def play_again(user_input, replay):
+    while replay is True:
+
+        user_input = input("Another round? Y/N ").lower()
+        if user_input.isalpha() and user_input == "y":
+            continue
+        else:
+            sys.exit()
+
 
 if __name__ == '__main__':
 
@@ -58,23 +73,34 @@ if __name__ == '__main__':
 
     board = "_" * word_length
 
-    guesses = word_length + 1
+    play = True
 
-    while guesses != 0:
+    play_response = ''
+
+    guesses_allowed = int(word_length) + 2
+
+    user_guesses = 0
+
+    while user_guesses < guesses_allowed:
+
+        print(board)
 
         user_letter = str(letter_guess(guessed_letters))
 
         if user_letter in str(word):
             board = blank_replacer(word_length, word, user_letter, board)
         elif user_letter in guessed_letters:
-            guesses = guesses
+            user_guesses = user_guesses
         else:
-            guesses -= 1
+            user_guesses += 1
 
-        print("You have {} guesses remaining.".format(guesses))
+        print("You have used {} / {} guesses.".format(user_guesses, guesses_allowed))
 
         if word == str(board):
             print("WINNER! The word was {}!!".format(word))
             break
+        elif user_guesses == guesses_allowed:
+            print("Sorry. You loss. The word is {}.".format(word))
+            break
 
-        print(board)
+
