@@ -1,7 +1,6 @@
 import random
 
 
-
 def intro():
     """
     Welcomes player to game and asks them to select a difficulty level.
