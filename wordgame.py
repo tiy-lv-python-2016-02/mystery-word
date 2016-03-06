@@ -28,8 +28,9 @@ def letter_guess(already_guessed):
 
     guessed_letter = input("Guess a letter: ")
 
-    while guessed_letter.isalpha() and guessed_letter not in already_guessed:
-        already_guessed.append(guessed_letter[0])
+    while guessed_letter.isalpha() and guessed_letter not in already_guessed\
+             and len(guessed_letter) == 1:
+        already_guessed.append(guessed_letter)
         return guessed_letter
     else:
         print("Input invalid.")
@@ -52,7 +53,6 @@ def play_again(user_input, replay):
             return replay
         else:
             sys.exit()
-
 
 
 if __name__ == '__main__':
@@ -93,7 +93,7 @@ if __name__ == '__main__':
             elif user_letter not in str(word) and user_letter in guessed_letters:
                 user_guesses += 1
 
-            print("You have used {} / {} guesses."\
+            print("You have used {} / {} bad guesses."\
                   .format(user_guesses, guesses_allowed))
 
             if word == str(board):
