@@ -28,14 +28,11 @@ def letter_guess(already_guessed):
 
     guessed_letter = input("Guess a letter: ")
 
-    if guessed_letter.isalpha() and guessed_letter not in already_guessed:
+    while guessed_letter.isalpha() and guessed_letter not in already_guessed:
         already_guessed.append(guessed_letter[0])
         return guessed_letter
     else:
         print("Input invalid.")
-        letter_guess(already_guessed)
-
-    return already_guessed
 
 
 def blank_replacer(length, the_word, letter, board_arg):
@@ -49,58 +46,54 @@ def blank_replacer(length, the_word, letter, board_arg):
 
 
 def play_again(user_input, replay):
-    while replay is True:
-
+    while replay:
         user_input = input("Another round? Y/N ").lower()
         if user_input.isalpha() and user_input == "y":
-            continue
+            return replay
         else:
             sys.exit()
-
 
 if __name__ == '__main__':
 
     mode_input = input('\tType your difficulty setting:\
     \n(E)ASY\t\t (N)ORMAL\t  (H)ARD\n').lower()
 
-    guessed_letters = []
-
-    word_list = get_word_list(mode_input)
-
-    word = random.choice(word_list)
-
-    word_length = len(word)
-
-    board = "_" * word_length
-
     play = True
 
     play_response = ''
 
-    guesses_allowed = int(word_length) + 2
+    while play:
 
-    user_guesses = 0
+        guessed_letters = []
 
-    while user_guesses < guesses_allowed:
+        word_list = get_word_list(mode_input)
 
-        print(board)
+        word = random.choice(word_list)
 
-        user_letter = str(letter_guess(guessed_letters))
+        word_length = len(word)
 
-        if user_letter in str(word):
-            board = blank_replacer(word_length, word, user_letter, board)
-        elif user_letter in guessed_letters:
-            user_guesses = user_guesses
-        else:
-            user_guesses += 1
+        board = "_" * word_length
+        print("The word has {} letters.".format(word_length))
 
-        print("You have used {} / {} guesses.".format(user_guesses, guesses_allowed))
+        user_guesses = 0
 
-        if word == str(board):
-            print("WINNER! The word was {}!!".format(word))
-            break
-        elif user_guesses == guesses_allowed:
-            print("Sorry. You loss. The word is {}.".format(word))
-            break
+        guesses_allowed = int(word_length) + 2
 
+        while user_guesses < guesses_allowed:
 
+            print(board)
+            user_letter = str(letter_guess(guessed_letters))
+
+            if user_letter in str(word):
+                board = blank_replacer(word_length, word, user_letter, board)
+            elif user_letter not in str(word) and user_letter in guessed_letters:
+                user_guesses += 1
+
+            print("You have used {} / {} guesses.".format(user_guesses, guesses_allowed))
+
+            if word == str(board):
+                print("WINNER! The word was {}!!".format(word))
+                play_again(play_response, play)
+            elif user_guesses == guesses_allowed:
+                print("Sorry. You loss. The word is {}.".format(word))
+                play_again(play_response, play)
