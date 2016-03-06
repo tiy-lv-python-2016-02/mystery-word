@@ -53,6 +53,8 @@ def play_again(user_input, replay):
         else:
             sys.exit()
 
+
+
 if __name__ == '__main__':
 
     play = True
@@ -73,6 +75,7 @@ if __name__ == '__main__':
         word_length = len(word)
 
         board = "_" * word_length
+
         print("The word has {} letters.".format(word_length))
 
         user_guesses = 0
@@ -82,6 +85,7 @@ if __name__ == '__main__':
         while user_guesses < guesses_allowed:
 
             print(board)
+
             user_letter = str(letter_guess(guessed_letters))
 
             if user_letter in str(word):
@@ -95,6 +99,8 @@ if __name__ == '__main__':
             if word == str(board):
                 print("WINNER! The word was {}!!".format(word))
                 play_again(play_response, play)
+                break
             elif user_guesses == guesses_allowed:
                 print("Sorry. You loss. The word is {}.".format(word))
                 play_again(play_response, play)
+                break
