@@ -55,14 +55,14 @@ def play_again(user_input, replay):
 
 if __name__ == '__main__':
 
-    mode_input = input('\tType your difficulty setting:\
-    \n(E)ASY\t\t (N)ORMAL\t  (H)ARD\n').lower()
-
     play = True
 
     play_response = ''
 
     while play:
+
+        mode_input = input('\tType your difficulty setting:\
+    \n(E)ASY\t\t (N)ORMAL\t  (H)ARD\n').lower()
 
         guessed_letters = []
 
@@ -89,7 +89,8 @@ if __name__ == '__main__':
             elif user_letter not in str(word) and user_letter in guessed_letters:
                 user_guesses += 1
 
-            print("You have used {} / {} guesses.".format(user_guesses, guesses_allowed))
+            print("You have used {} / {} guesses."\
+                  .format(user_guesses, guesses_allowed))
 
             if word == str(board):
                 print("WINNER! The word was {}!!".format(word))
