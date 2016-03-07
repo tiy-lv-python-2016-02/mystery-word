@@ -1,15 +1,16 @@
 import random
 
-# create a list of words that could be used in the game.
-file = open('/usr/share/dict/words')
-
-wordlist = file.readlines()  # there are 235,886 lines
-
-mystery_word = random.choice(wordlist).lower()
-correct_guesses = []
-wrong_guesses = []
 
 if __name__ == '__main__':
+
+    # create a list of words that could be used in the game.
+    file = open('/usr/share/dict/words')
+
+    wordlist = file.readlines()  # there are 235,886 lines
+
+    mystery_word = random.choice(wordlist).lower()
+    correct_guesses = []
+    wrong_guesses = []
 
     while True:
         play = input("\nDo you want to play Hangman? Type 'Yes'to begin.\n")
